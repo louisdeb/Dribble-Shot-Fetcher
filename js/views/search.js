@@ -28,6 +28,7 @@ DribbleApp.Views.Search = Backbone.View.extend({
     var shotview;
     var shotList = this.$el.find('#shot-list');
     var shotCount = Math.min(5, shots.models.length);
+    shots.sort(); // Sort the shots into descending order by likes count.
 
     shotList.html(''); // Clear previous list elements.
     for (i = 0; i < shotCount; i++) {

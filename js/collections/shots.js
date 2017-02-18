@@ -6,6 +6,16 @@ DribbleApp.Collections.Shots = Backbone.Collection.extend({
     }
   },
 
+  /** Returns
+        1 iff "b" has more likes than "a",
+        0 iff "a" and "b" have the same number of likes,
+        -1 iff "a" has more likes than "b".
+      Used to sort the collection into descending order by likes count.
+      */
+  comparator: function(a,b) {
+    return b.attributes.likes_count - a.attributes.likes_count;
+  },
+
   /** Set up OAuth header with access_token and call GET request for user's shots. */
   url: function() {
     $.ajaxSetup ({
