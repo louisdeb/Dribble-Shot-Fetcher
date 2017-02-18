@@ -35,6 +35,9 @@ DribbleApp.Views.Search = Backbone.View.extend({
       shotList.append(shotview.render().el); // Render shots in list.
     }
 
+    if (shotCount)
+      shotList.append("<div id='user-tag'><h1>username: "+shots.username+"</h1></div>");
+
     if (shotCount == 0) // Display 'No shots' if none were returned.
       shotList.html('No shots');
 
