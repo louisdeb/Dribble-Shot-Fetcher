@@ -1,26 +1,26 @@
 DribbleApp.Collections.Shots = Backbone.Collection.extend({
 
   initialize: function(options) {
-    if (options.account) {
-      console.log("account added: " + options.account);
-      this.account = options.account;
+    if (options.username) {
+      this.username = options.username;
     }
   },
 
+  /** Set up OAuth header with access_token and call GET request for user's shots. */
   url: function() {
-    console.log("made api call");
-
     $.ajaxSetup ({
-      data: { access_token: '1283398e464a3f0b286c3fd11611ca4f261c6b7d74c1dedc7c3fb10c58f08e32' }
+      headers: {
+        "Authorization": "Bearer 1283398e464a3f0b286c3fd11611ca4f261c6b7d74c1dedc7c3fb10c58f08e32"
+      },
+      processData: true
     });
 
-    return "https://api.dribbble.com/v1/shots";
+    return "https://api.dribbble.com/v1/users/"+this.username+"/shots";
   },
 
+  /** Return the response from the Dribbble API. */
   parse: function(response) {
-    console.log("got response");
-    console.log(response);
-    return response.Search;
+    return response;
   }
 
 });

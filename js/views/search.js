@@ -16,19 +16,21 @@ DribbleApp.Views.Search = Backbone.View.extend({
   },
 
   getspots: function() {
-    var account = this.$el.find('input').val();
-    var shots = new DribbleApp.Collections.Shots({account: account});
+    var username = this.$el.find('input').val();
+    var shots = new DribbleApp.Collections.Shots({username: username});
 
     shots.fetch({success: this.rendershots.bind(this)});
   },
 
   rendershots: function(shots) {
+    console.log('rendershots got '+shots);
     var shotview;
 
-    for (var n in shots.models) {
-      console.log('rendering shot ' + shots.models[n].attributes.title);
-      shotview = new DribbleApp.Views.Shot({model: shots.models[n]});
+    var shotsCount = Math.min(5, shots.models.length);
+    for (i = 0; i < shotsCount; i++) {
+      shotview = new DribbleApp.Views.Shot({model: shots.models[i]});
       this.$el.find('#shot-list').append(shotview.render().el);
     }
+    shots.reset();
   }
 });
