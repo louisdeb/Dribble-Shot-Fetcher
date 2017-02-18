@@ -25,15 +25,19 @@ DribbleApp.Views.Search = Backbone.View.extend({
 
   /** Print <= 5 shots returned by the Dribbble API. */
   rendershots: function(shots) {
-    console.log("received shots: "+shots);
     var shotview;
-    var shotsCount = Math.min(5, shots.models.length);
-    for (i = 0; i < shotsCount; i++) {
+    var shotList = this.$el.find('#shot-list');
+    var shotCount = Math.min(5, shots.models.length);
+
+    shotList.html(''); // Clear previous list elements.
+    for (i = 0; i < shotCount; i++) {
       shotview = new DribbleApp.Views.Shot({model: shots.models[i]});
-      this.$el.find('#shot-list').append(shotview.render().el);
+      shotList.append(shotview.render().el); // Render shots in list.
     }
-    if (shotsCount == 0) // Display 'No shots' if none were returned.
-      this.$el.find('#shot-list').html('No shots');
+
+    if (shotCount == 0) // Display 'No shots' if none were returned.
+      shotList.html('No shots');
+
     shots.reset(); // Reset our collection so we can re-use it next time.
   }
 });
