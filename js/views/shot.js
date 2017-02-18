@@ -1,3 +1,3 @@
-DribbleApp.Views.Shots = Backbone.Views.extend({
+DribbleApp.Views.Shots = Backbone.View.extend({
   initialize: function(options) {}
 });
