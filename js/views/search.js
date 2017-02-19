@@ -20,6 +20,7 @@ DribbleApp.Views.Search = Backbone.View.extend({
     var username = this.$el.find('input').val();
     if(!this.shots)
       this.shots = new DribbleApp.Collections.Shots({username: username});
+    this.shots.username = username; // Update username for successive getshots for different accounts.
     this.shots.fetch({success: this.getallshots.bind(this), add: true});
   },
 
