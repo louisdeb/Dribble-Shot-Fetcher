@@ -4,15 +4,19 @@ DribbleApp.Collections.Shots = Backbone.Collection.extend({
     if (options.username) {
       this.username = options.username;
     }
+    this.page = 1;
+    this.perpage = 100;
   },
 
   /** Returns
-        1 iff "b" has more likes than "a",
+        1 if "b" has more likes than "a" or "a" has no likes_count,
         0 iff "a" and "b" have the same number of likes,
-        -1 iff "a" has more likes than "b".
+        -1 if "a" has more likes than "b" or "b" has no likes_count.
       Used to sort the collection into descending order by likes count.
       */
   comparator: function(a,b) {
+    if (!a.attributes.likes_count) return 1;
+    if (!b.attributes.likes_count) return -1;
     return b.attributes.likes_count - a.attributes.likes_count;
   },
 
@@ -25,7 +29,8 @@ DribbleApp.Collections.Shots = Backbone.Collection.extend({
       processData: true
     });
 
-    return "https://api.dribbble.com/v1/users/"+this.username+"/shots";
+    return "https://api.dribbble.com/v1/users/"+this.username
+            +"/shots?page="+this.page+"&per_page="+this.perpage;
   },
 
   /** Return the response from the Dribbble API. */

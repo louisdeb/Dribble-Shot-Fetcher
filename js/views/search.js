@@ -1,7 +1,7 @@
 DribbleApp.Views.Search = Backbone.View.extend({
 
   events: {
-    'click button': 'getspots'
+    'click button': 'getshots'
   },
 
   template: "<input type='text' placeholder='search'> \
@@ -16,19 +16,30 @@ DribbleApp.Views.Search = Backbone.View.extend({
   },
 
   /** Create a new collection and fetch shots for given username. */
-  getspots: function() {
+  getshots: function() {
     var username = this.$el.find('input').val();
-    var shots = new DribbleApp.Collections.Shots({username: username});
+    if(!this.shots)
+      this.shots = new DribbleApp.Collections.Shots({username: username});
+    this.shots.fetch({success: this.getallshots.bind(this), add: true});
+  },
 
-    shots.fetch({success: this.rendershots.bind(this)});
+  getallshots: function(shots) {
+    if (shots.models.length / shots.page >= 100) {
+      shots.page += 1;
+      this.getshots();
+      return;
+    }
+
+    shots.page = 1;
+    shots.sort(); // Sort the shots into descending order by likes count.
+    this.rendershots(shots);
   },
 
   /** Print <= 5 shots returned by the Dribbble API. */
   rendershots: function(shots) {
     var shotview;
     var shotList = this.$el.find('#shot-list');
-    var shotCount = Math.min(5, shots.models.length);
-    shots.sort(); // Sort the shots into descending order by likes count.
+    var shotCount = Math.min(5, shots.length);
 
     shotList.html(''); // Clear previous list elements.
     for (i = 0; i < shotCount; i++) {
